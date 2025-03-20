@@ -1,26 +1,39 @@
 import { Injectable } from '@nestjs/common';
 import { CreateRecipeDto } from './dto/create-recipe.dto';
 import { UpdateRecipeDto } from './dto/update-recipe.dto';
+import { InjectModel } from '@nestjs/sequelize';
+import { Recipe } from './entities/recipe.entity';
 
 @Injectable()
 export class RecipeService {
-  create(createRecipeDto: CreateRecipeDto) {
-    return 'This action adds a new recipe';
+  constructor(
+    @InjectModel(Recipe)
+    private RecipeModule: typeof Recipe,
+  ) {}
+
+  async create(createRecipeDto: CreateRecipeDto) {
+    return await this.RecipeModule.create(
+      createRecipeDto as unknown as Partial<Recipe>,
+    );
   }
 
-  findAll() {
-    return `This action returns all recipe`;
+  async update(id: number, updateRecipeDto: UpdateRecipeDto) {
+    return await this.RecipeModule.update(updateRecipeDto, {
+      where: { id: id },
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} recipe`;
+  async findAll() {
+    return await this.RecipeModule.findAll();
   }
 
-  update(id: number, updateRecipeDto: UpdateRecipeDto) {
-    return `This action updates a #${id} recipe`;
+  async findOne(id: number) {
+    return await this.RecipeModule.findByPk(id);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} recipe`;
+  async remove(id: number) {
+    return await this.RecipeModule.destroy({
+      where: { id: id },
+    });
   }
 }
