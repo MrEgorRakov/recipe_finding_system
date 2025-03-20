@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { CreateAuthDto } from './dto/register.dto';
-import { UpdateAuthDto } from './dto/login.dto';
+import { RegisterDto } from './dto/register.dto';
+import { LoginDto } from './dto/login.dto';
 
 @Injectable()
 export class AuthService {
-  create(createAuthDto: CreateAuthDto) {
+  create(LoginDto: LoginDto) {
     return 'This action adds a new auth';
   }
 
@@ -16,7 +16,7 @@ export class AuthService {
     return `This action returns a #${id} auth`;
   }
 
-  update(id: number, updateAuthDto: UpdateAuthDto) {
+  update(id: number, RegisterDto: RegisterDto) {
     return `This action updates a #${id} auth`;
   }
 
