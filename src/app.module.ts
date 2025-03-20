@@ -8,6 +8,7 @@ import { RecipeModule } from './recipe/recipe.module';
 import { UserAccountModule } from './user_account/user_account.module';
 import { ConfigModule } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
+import { UserAccount } from './user_account/entities/user_account.entity';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { SequelizeModule } from '@nestjs/sequelize';
     AuthModule,
     RecipeModule,
     UserAccountModule,
+    SequelizeModule.forFeature([UserAccount]),
   ],
   controllers: [AppController],
   providers: [AppService],

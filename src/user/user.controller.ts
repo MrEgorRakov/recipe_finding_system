@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   NotFoundException,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -34,7 +35,7 @@ export class UserController {
   }
 
   @Get(':id') //localhost:3000/customer/:id
-  async findOne(@Param('id') id: string) {
+  async findOne(@Param('id', new ParseIntPipe()) id: number) {
     const findUser = await this.userService.findOne(+id);
     if (findUser == null) {
       throw new NotFoundException('No data here:,(');
@@ -43,7 +44,7 @@ export class UserController {
   }
 
   @Patch('/update/:id')
-  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+  async update(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto) {
     const [updateUser] = await this.userService.update(+id, updateUserDto);
     console.log(updateUser);
     if (updateUser === 0) {
@@ -53,7 +54,7 @@ export class UserController {
   }
 
   @Delete('/delete/:id')
-  async remove(@Param('id') id: string) {
+  async remove(@Param('id') id: number) {
     const destroyUser = await this.userService.remove(+id);
     console.log(destroyUser);
     if (destroyUser === 0) {

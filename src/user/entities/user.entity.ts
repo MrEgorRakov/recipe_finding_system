@@ -7,6 +7,13 @@ import { Column, DataType, Model, Table } from 'sequelize-typescript';
 })
 export class User extends Model {
   @Column({
+    type: DataType.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+  })
+  id: number;
+
+  @Column({
     type: DataType.STRING(30),
     allowNull: false,
   })
@@ -25,5 +32,5 @@ export class User extends Model {
     type: DataType.INTEGER,
     allowNull: false,
   })
-  phone_nubmer: IntegerDataType;
+  phone_number: IntegerDataType;
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/sequelize';
@@ -28,6 +28,9 @@ export class UserService {
   }
 
   async findOne(id: number) {
+    if (isNaN(id)) {
+      throw new BadRequestException('Invalid ID: must be a number');
+    }
     return await this.UserModule.findByPk(id);
   }
 

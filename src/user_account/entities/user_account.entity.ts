@@ -1,14 +1,15 @@
 import { Column, DataType, Model, Table } from 'sequelize-typescript';
 @Table({
-  tableName: 'user_account',
+  tableName: 'UserAccount',
   timestamps: false,
 })
-export class User_Account extends Model {
+export class UserAccount extends Model {
   @Column({
-    type: DataType.NUMBER,
-    allowNull: false,
+    type: DataType.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
   })
-  User_recipe_id: number;
+  id: number;
 
   @Column({
     type: DataType.STRING(30),
@@ -26,5 +27,5 @@ export class User_Account extends Model {
     type: DataType.STRING(30),
     allowNull: false,
   })
-  User_recipe_name: string;
+  UserRecipeName: string;
 }

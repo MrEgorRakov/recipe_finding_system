@@ -33,7 +33,7 @@ export class RecipeController {
     return this.recipeService.findAll();
   }
 
-  @Get(':id') 
+  @Get(':id')
   async findOne(@Param('id') id: string) {
     const findRecipe = await this.recipeService.findOne(+id);
     if (findRecipe == null) {
@@ -42,13 +42,25 @@ export class RecipeController {
     return findRecipe;
   }
 
+  @Get('/findname/:name')
+  async findname(@Param('name') name: string) {
+    const findname = await this.recipeService.findname(name);
+    if (findname == null) {
+      throw new NotFoundException('No data, what a shame');
+    }
+    return findname;
+  }
+
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateRecipeDto: UpdateRecipeDto) {
+  async update(
+    @Param('id') id: string,
+    @Body() updateRecipeDto: UpdateRecipeDto,
+  ) {
     const updatedRecipe = await this.recipeService.update(+id, updateRecipeDto);
     if (!updatedRecipe) {
       throw new NotFoundException('Recipe not found to update');
     }
-    return updatedRecipe;
+    return { message: 'Data Updated' };
   }
 
   @Delete(':id')

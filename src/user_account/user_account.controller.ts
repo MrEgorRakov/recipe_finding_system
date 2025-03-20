@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  NotFoundException,
 } from '@nestjs/common';
 import { UserAccountService } from './user_account.service';
 import { CreateUserAccountDto } from './dto/create-user_account.dto';
@@ -38,16 +39,29 @@ export class UserAccountController {
     return this.userAccountService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
+  @Patch('/update/:id')
+  async update(
+    @Param('id') id: number,
     @Body() updateUserAccountDto: UpdateUserAccountDto,
   ) {
-    return this.userAccountService.update(+id, updateUserAccountDto);
+    const [updateUserAccount] = await this.userAccountService.update(
+      +id,
+      updateUserAccountDto,
+    );
+    console.log(updateUserAccount);
+    if (updateUserAccount === 0) {
+      throw new NotFoundException('no data here');
+    }
+    return { message: 'Data Updated' };
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userAccountService.remove(+id);
+  @Delete('/delete/:id')
+  async remove(@Param('id') id: number) {
+    const destroyUserAccount = await this.userAccountService.remove(+id);
+    console.log(destroyUserAccount);
+    if (destroyUserAccount === 0) {
+      throw new NotFoundException('There is nothing to delete here');
+    }
+    return { message: 'Data Removed' };
   }
 }

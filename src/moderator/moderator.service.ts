@@ -1,26 +1,39 @@
 import { Injectable } from '@nestjs/common';
 import { CreateModeratorDto } from './dto/create-moderator.dto';
 import { UpdateModeratorDto } from './dto/update-moderator.dto';
+import { Moderator } from './entities/moderator.entity';
+import { InjectModel } from '@nestjs/sequelize';
 
 @Injectable()
 export class ModeratorService {
-  create(createModeratorDto: CreateModeratorDto) {
-    return 'This action adds a new moderator';
+  constructor(
+    @InjectModel(Moderator)
+    private readonly ModeratorModule: typeof Moderator,
+  ) {}
+
+  async create(createModeratorDto: CreateModeratorDto) {
+    return await this.ModeratorModule.create(
+      createModeratorDto as unknown as Partial<Moderator>,
+    );
   }
 
-  findAll() {
-    return `This action returns all moderator`;
+  async update(id: number, updateModeratorDto: UpdateModeratorDto) {
+    return await this.ModeratorModule.update(updateModeratorDto, {
+      where: { id: id },
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} moderator`;
+  async findAll() {
+    return await this.ModeratorModule.findAll();
   }
 
-  update(id: number, updateModeratorDto: UpdateModeratorDto) {
-    return `This action updates a #${id} moderator`;
+  async findOne(id: number) {
+    return await this.ModeratorModule.findByPk(id);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} moderator`;
+  async remove(id: number) {
+    return await this.ModeratorModule.destroy({
+      where: { id: id },
+    });
   }
 }

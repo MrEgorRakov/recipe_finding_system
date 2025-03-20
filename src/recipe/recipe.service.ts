@@ -6,6 +6,13 @@ import { Recipe } from './entities/recipe.entity';
 
 @Injectable()
 export class RecipeService {
+  async findname(name: string) {
+    return await this.RecipeModule.findOne({
+      where: {
+        name: name,
+      },
+    });
+  }
   constructor(
     @InjectModel(Recipe)
     private RecipeModule: typeof Recipe,

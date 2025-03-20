@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  NotFoundException,
 } from '@nestjs/common';
 import { ModeratorService } from './moderator.service';
 import { CreateModeratorDto } from './dto/create-moderator.dto';
@@ -17,7 +18,8 @@ export class ModeratorController {
 
   @Post('/create')
   async create(@Body() createModeratorDto: CreateModeratorDto) {
-    const CreateModerator = await this.moderatorService.create(createModeratorDto);
+    const CreateModerator =
+      await this.moderatorService.create(createModeratorDto);
     if (CreateModerator == null) {
       throw new Error('bad data');
     }
@@ -32,18 +34,24 @@ export class ModeratorController {
     return this.moderatorService.findAll();
   }
 
-  @Get(':id') //localhost:3000/customer/:id
+  @Get(':id') //localhost:3000/moderator/:id
   async findOne(@Param('id') id: string) {
     const findModerator = await this.moderatorService.findOne(+id);
     if (findModerator == null) {
       throw new NotFoundException('No data here:,(');
     }
-    return findUser;
+    return findModerator;
   }
 
   @Patch('/update/:id')
-  async update(@Param('id') id: string, @Body() updateModeratorDto: UpdateModeratorDto) {
-    const [updateModerator] = await this.moderatorService.update(+id, updateModeratorDto);
+  async update(
+    @Param('id') id: string,
+    @Body() updateModeratorDto: UpdateModeratorDto,
+  ) {
+    const [updateModerator] = await this.moderatorService.update(
+      +id,
+      updateModeratorDto,
+    );
     console.log(updateModerator);
     if (updateModerator === 0) {
       throw new NotFoundException('no data here');

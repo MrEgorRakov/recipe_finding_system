@@ -1,26 +1,41 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateUserAccountDto } from './dto/create-user_account.dto';
 import { UpdateUserAccountDto } from './dto/update-user_account.dto';
+import { InjectModel } from '@nestjs/sequelize';
+import { UserAccount } from './entities/user_account.entity';
 
 @Injectable()
 export class UserAccountService {
-  create(createUserAccountDto: CreateUserAccountDto) {
-    return 'This action adds a new userAccount';
+  constructor(
+    @InjectModel(UserAccount)
+    private UserAccountModule: typeof UserAccount,
+  ) {}
+
+  async create(createUserAccountDto: CreateUserAccountDto) {
+    return await this.UserAccountModule.create(
+      createUserAccountDto as unknown as Partial<UserAccount>,
+    );
+  }
+  async findAll() {
+    return await this.UserAccountModule.findAll();
   }
 
-  findAll() {
-    return `This action returns all userAccount`;
+  async findOne(id: number) {
+    if (isNaN(id)) {
+      throw new BadRequestException('Invalid ID: must be a number');
+    }
+    return await this.UserAccountModule.findByPk(id);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} userAccount`;
+  async update(id: number, updateUserAccountDto: UpdateUserAccountDto) {
+    return await this.UserAccountModule.update(updateUserAccountDto, {
+      where: { id: id },
+    });
   }
 
-  update(id: number, updateUserAccountDto: UpdateUserAccountDto) {
-    return `This action updates a #${id} userAccount`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} userAccount`;
+  async remove(id: number) {
+    return await this.UserAccountModule.destroy({
+      where: { id: id },
+    });
   }
 }

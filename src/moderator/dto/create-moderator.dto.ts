@@ -1,1 +1,4 @@
-export class CreateModeratorDto {}
+export class CreateModeratorDto {
+  ModeratorId: string;
+  ModeratorName: string;
+}

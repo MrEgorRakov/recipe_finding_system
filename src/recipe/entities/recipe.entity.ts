@@ -10,17 +10,17 @@ export class Recipe extends Model {
     autoIncrement: true,
     primaryKey: true,
   })
-  id: number; 
+  id: number;
 
   @Column({
-    type: DataType.STRING(255),
+    type: DataType.STRING(60),
     allowNull: false,
   })
-  name: string; 
+  name: string;
 
   @Column({
     type: DataType.TEXT,
     allowNull: false,
   })
-  description: string; 
+  description: string;
 }
