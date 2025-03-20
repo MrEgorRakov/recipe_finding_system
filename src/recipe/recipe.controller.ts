@@ -7,11 +7,17 @@ import { UpdateRecipeDto } from './dto/update-recipe.dto';
 export class RecipeController {
   constructor(private readonly recipeService: RecipeService) {}
 
-  @Post()
-  create(@Body() createRecipeDto: CreateRecipeDto) {
-    return this.recipeService.create(createRecipeDto);
+  @Post('/create')
+  async create(@Body() createUserDto: CreateRecipeDto) {
+    const createUser = await this.recipeService.create(createUserDto);
+    if (createUser == null) {
+      throw new Error('bad data');
+    }
+    return {
+      message: 'user created',
+      data: createUser,
+    };
   }
-
   @Get()
   findAll() {
     return this.recipeService.findAll();
