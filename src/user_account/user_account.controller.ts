@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { UserAccountService } from './user_account.service';
 import { CreateUserAccountDto } from './dto/create-user_account.dto';
 import { UpdateUserAccountDto } from './dto/update-user_account.dto';
@@ -7,9 +15,17 @@ import { UpdateUserAccountDto } from './dto/update-user_account.dto';
 export class UserAccountController {
   constructor(private readonly userAccountService: UserAccountService) {}
 
-  @Post()
+  @Post('/create')
   create(@Body() createUserAccountDto: CreateUserAccountDto) {
-    return this.userAccountService.create(createUserAccountDto);
+    const createUserAccount =
+      this.userAccountService.create(createUserAccountDto);
+    if (createUserAccount == null) {
+      throw new Error('noob data');
+    }
+    return {
+      message: 'got the data',
+      data: createUserAccount,
+    };
   }
 
   @Get()
@@ -23,7 +39,10 @@ export class UserAccountController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserAccountDto: UpdateUserAccountDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateUserAccountDto: UpdateUserAccountDto,
+  ) {
     return this.userAccountService.update(+id, updateUserAccountDto);
   }
 
