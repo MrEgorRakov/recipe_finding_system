@@ -1,10 +1,15 @@
-import { IntegerDataType } from 'sequelize';
 import { Column, DataType, Model, Table } from 'sequelize-typescript';
 @Table({
   tableName: 'user_account',
   timestamps: false,
 })
 export class User_Account extends Model {
+  @Column({
+    type: DataType.NUMBER,
+    allowNull: false,
+  })
+  User_recipe_id: number;
+
   @Column({
     type: DataType.STRING(30),
     allowNull: false,
@@ -15,11 +20,11 @@ export class User_Account extends Model {
     type: DataType.STRING(50),
     allowNull: false,
   })
-  email: string;
+  password: string;
 
   @Column({
-    type: DataType.INTEGER,
+    type: DataType.STRING(30),
     allowNull: false,
   })
-  phone_nubmer: IntegerDataType;
+  User_recipe_name: string;
 }
