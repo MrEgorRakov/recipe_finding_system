@@ -1,42 +1,39 @@
 import {
+  Body,
   Controller,
   Get,
+  HttpCode,
   Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
+  UseGuards,
+  Request,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
+import { JwtAuthGuard } from './jwt-auth.guard';
 
-@Controller('auth')
+@Controller('auth') // localhost:3000/auth
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post()
-  create(@Body() loginDto: LoginDto) {
-    return this.authService.create(loginDto);
+  @Post('/register') // localhost:3000/auth/register
+  @HttpCode(201) // show code 201, when register complete
+  async register(@Body() registerDto: RegisterDto) {
+    await this.authService.register(registerDto);
+    return {
+      message: 'Register Complete',
+    };
   }
 
-  @Get()
-  findAll() {
-    return this.authService.findAll();
+  @Post('/login') // localhost:3000/auth/login
+  async login(@Body() LoginDto: LoginDto) {
+    return await this.authService.login(LoginDto);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.authService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() registerDto: RegisterDto) {
-    return this.authService.update(+id, registerDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.authService.remove(+id);
+  @UseGuards(JwtAuthGuard) // protect route and check token
+  @Get('/profile') // localhost:3000/auth/profile
+  async getProfile(@Request() req: any) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    return await this.authService.getUsertProfile(Number(req.user.user_id));
   }
 }

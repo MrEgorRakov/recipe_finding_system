@@ -7,15 +7,18 @@ import {
   Param,
   Delete,
   NotFoundException,
+  UseGuards,
 } from '@nestjs/common';
 import { UserAccountService } from './user_account.service';
 import { CreateUserAccountDto } from './dto/create-user_account.dto';
 import { UpdateUserAccountDto } from './dto/update-user_account.dto';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('user-account')
 export class UserAccountController {
   constructor(private readonly userAccountService: UserAccountService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post('/create')
   create(@Body() createUserAccountDto: CreateUserAccountDto) {
     const createUserAccount =
@@ -38,7 +41,7 @@ export class UserAccountController {
   findOne(@Param('id') id: string) {
     return this.userAccountService.findOne(+id);
   }
-
+  @UseGuards(JwtAuthGuard)
   @Patch('/update/:id')
   async update(
     @Param('id') id: number,
@@ -54,7 +57,7 @@ export class UserAccountController {
     }
     return { message: 'Data Updated' };
   }
-
+  @UseGuards(JwtAuthGuard)
   @Delete('/delete/:id')
   async remove(@Param('id') id: number) {
     const destroyUserAccount = await this.userAccountService.remove(+id);
