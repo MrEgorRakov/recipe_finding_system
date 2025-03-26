@@ -7,15 +7,17 @@ import {
   Param,
   Delete,
   NotFoundException,
+  UseGuards,
 } from '@nestjs/common';
 import { RecipeService } from './recipe.service';
 import { CreateRecipeDto } from './dto/create-recipe.dto';
 import { UpdateRecipeDto } from './dto/update-recipe.dto';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('recipe')
 export class RecipeController {
   constructor(private readonly recipeService: RecipeService) {}
-
+  @UseGuards(JwtAuthGuard)
   @Post('/create')
   async create(@Body() createRecipeDto: CreateRecipeDto) {
     const createRecipe = await this.recipeService.create(createRecipeDto);
@@ -50,7 +52,7 @@ export class RecipeController {
     }
     return findname;
   }
-
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   async update(
     @Param('id') id: string,
@@ -62,7 +64,7 @@ export class RecipeController {
     }
     return { message: 'Data Updated' };
   }
-
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async remove(@Param('id') id: string) {
     const deletedRecipe = await this.recipeService.remove(+id);
