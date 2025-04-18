@@ -8,12 +8,10 @@ import {
   Delete,
   NotFoundException,
   ParseIntPipe,
-  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('user')
 export class UserController {
@@ -45,7 +43,6 @@ export class UserController {
     return findUser;
   }
 
-  @UseGuards(JwtAuthGuard)
   @Patch('/update/:id')
   async update(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto) {
     const [updateUser] = await this.userService.update(+id, updateUserDto);
@@ -56,7 +53,6 @@ export class UserController {
     return { message: 'Data Updated' };
   }
 
-  @UseGuards(JwtAuthGuard)
   @Delete('/delete/:id')
   async remove(@Param('id') id: number) {
     const destroyUser = await this.userService.remove(+id);
