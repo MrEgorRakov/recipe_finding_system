@@ -10,6 +10,7 @@ import { ModeratorModule } from './moderator/moderator.module';
 import { AuthModule } from './auth/auth.module';
 import { RecipeModule } from './recipe/recipe.module';
 import { UserAccountModule } from './user_account/user_account.module';
+import { ModeratorauthModule } from './moderator-auth/moderator-auth.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { UserAccountModule } from './user_account/user_account.module';
     AuthModule,
     RecipeModule,
     UserAccountModule,
+    ModeratorauthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
