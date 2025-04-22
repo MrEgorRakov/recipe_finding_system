@@ -17,4 +17,19 @@ export class Moderator extends Model {
     allowNull: false,
   })
   ModeratorName: string;
+
+  @Column({
+    type: DataType.STRING(50),
+    allowNull: false,
+  })
+  ModeratorPassword: string;
+
+  @Column({
+    type: DataType.STRING(50),
+    allowNull: false,
+    validate: {
+      isEmail: true, // ✅ Validates that the value is an email
+    },
+  })
+  ModeratorEmail: string;
 }
